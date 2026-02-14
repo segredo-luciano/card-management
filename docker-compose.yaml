@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: card-mysql
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: carddb
+      MYSQL_USER: carduser
+      MYSQL_PASSWORD: cardpass
+
+    ports:
+      - "3306:3306"
