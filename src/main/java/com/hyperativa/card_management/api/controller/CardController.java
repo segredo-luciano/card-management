@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hyperativa.card_management.api.dto.request.CreateCardRequest;
 import com.hyperativa.card_management.api.dto.response.BatchInsertResponse;
 import com.hyperativa.card_management.api.dto.response.CardResponse;
-import com.hyperativa.card_management.application.service.CardService;
+import com.hyperativa.card_management.application.usecase.BatchFileProcessmentUseCase;
+import com.hyperativa.card_management.application.usecase.CheckCardExistsUseCase;
+import com.hyperativa.card_management.application.usecase.CreateCardUseCase;
 import com.hyperativa.card_management.domain.Card;
 
 import jakarta.validation.Valid;
@@ -25,22 +27,28 @@ import jakarta.validation.Valid;
 public class CardController {
 
     private static final Logger log = LoggerFactory.getLogger(CardController.class);
-    private final CardService cardService;
+    private final CreateCardUseCase createCardUseCase;
+    private final CheckCardExistsUseCase checkCardExistsUseCase;
+    private final BatchFileProcessmentUseCase batchFileProcessmentUseCase;
 
-    public CardController(CardService cardService) {
-        this.cardService = cardService;
+    public CardController(CreateCardUseCase createCardUseCase,
+    		CheckCardExistsUseCase checkCardExistsUseCase,
+    		BatchFileProcessmentUseCase batchFileProcessmentUseCase) {
+        this.createCardUseCase = createCardUseCase;
+        this.checkCardExistsUseCase = checkCardExistsUseCase;
+        this.batchFileProcessmentUseCase = batchFileProcessmentUseCase;
     }
 
     @GetMapping
     public ResponseEntity<CardResponse> check(@RequestParam String cardNumber) {    	
-    	CardResponse card = cardService.handleCardExistence(cardNumber);
+    	CardResponse card = checkCardExistsUseCase.execute(cardNumber);
     	log.info("Card found successfully. id={}", card.cardId());
     	return ResponseEntity.ok(card);
     }
 
     @PostMapping
     public ResponseEntity<CardResponse> create(@Valid @RequestBody CreateCardRequest request) {
-        Card card = cardService.createCard(
+        Card card = createCardUseCase.execute(
                 request.batchId(),
                 request.orderNumber(),
                 request.cardNumber()
@@ -52,7 +60,7 @@ public class CardController {
 
     @PostMapping("/batch")
     public ResponseEntity<BatchInsertResponse> upload(@RequestParam MultipartFile file) {
-        return ResponseEntity.ok(cardService.processFile(file));
+        return ResponseEntity.ok(batchFileProcessmentUseCase.execute(file));
     }
 }
 

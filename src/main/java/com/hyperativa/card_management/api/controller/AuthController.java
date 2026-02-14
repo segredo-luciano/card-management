@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hyperativa.card_management.api.dto.request.AuthRequest;
 import com.hyperativa.card_management.api.dto.response.AuthResponse;
-import com.hyperativa.card_management.application.service.UserService;
+import com.hyperativa.card_management.application.usecase.LoginUseCase;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final LoginUseCase useCase;
 
-    public AuthController(UserService authService) {
-        this.userService = authService;
+    public AuthController(LoginUseCase useCase) {
+        this.useCase = useCase;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {    	    		
-		String token = userService.login(request.login(), request.password());
+		String token = useCase.execute(request.login(), request.password());
 		
 		return ResponseEntity.ok(new AuthResponse(token));    	
     }

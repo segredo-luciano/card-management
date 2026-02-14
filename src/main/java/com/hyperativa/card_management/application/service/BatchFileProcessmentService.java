@@ -1,95 +1,42 @@
-package com.hyperativa.card_management.application.service.impl;
+package com.hyperativa.card_management.application.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hyperativa.card_management.api.dto.response.BatchInsertResponse;
-import com.hyperativa.card_management.api.dto.response.CardResponse;
 import com.hyperativa.card_management.api.exception.BatchProcessingException;
-import com.hyperativa.card_management.api.exception.CardAlreadyExistsException;
-import com.hyperativa.card_management.api.exception.CardNotFoundException;
-import com.hyperativa.card_management.application.service.CardService;
+import com.hyperativa.card_management.application.usecase.BatchFileProcessmentUseCase;
 import com.hyperativa.card_management.config.BatchFileProperties;
 import com.hyperativa.card_management.domain.Card;
-import com.hyperativa.card_management.infrastructure.repository.CardRepository;
+import com.hyperativa.card_management.domain.port.CardRepositoryPort;
 import com.hyperativa.card_management.security.CryptoService;
 
 @Service
-public class CardServiceImpl implements CardService {
-	
-	private final CardRepository repository;    
+public class BatchFileProcessmentService implements BatchFileProcessmentUseCase {
+
+	private final CardRepositoryPort repository;    
     private final CryptoService cryptoService;
     private final BatchFileProperties batchProps;
-    private static final Logger log = LoggerFactory.getLogger(CardServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(BatchFileProcessmentService.class);
   
 
-    public CardServiceImpl(CardRepository repository, CryptoService cryptoService,
+    public BatchFileProcessmentService(CardRepositoryPort repository, CryptoService cryptoService,
     		BatchFileProperties batchProps) {
         this.repository = repository;    
         this.cryptoService = cryptoService;
         this.batchProps = batchProps;
     }
-
-	@Override
-	public Card createCard(Long batchId, Integer orderNumber, String cardNumber) {	
-		
-		if (!cardNumber.matches("\\d+")) {	
-			log.error("Failed to insert card! cardNumber must contain only digits");
-			throw new IllegalArgumentException("cardNumber must contain only digits");
-		}
-				
-		String hash = cryptoService.sha256(cardNumber);
-		
-		
-		try {		
-			log.info("Tryng to save card!");
-			byte[] encrypted = cryptoService.encryptAES(cardNumber);
-			
-			Card card = Card.builder()
-					.batchId(batchId)
-					.orderNumber(orderNumber)
-					.cardHash(hash)
-					.cardNumber(encrypted)
-					.build();			
-			
-			Card saved = repository.save(card);
-			
-			log.info("Card created. id={}, batchId={}, orderNumber={}",
-					saved.getId(), batchId, orderNumber);
-			
-			return saved;		
-		} catch(DataIntegrityViolationException dive) {			
-			log.error("Card already exists, throwing exception!");
-			throw new CardAlreadyExistsException();		
-		}
-	}	
-	
-	@Transactional(readOnly = true)
-	private Optional<Card> checkCardExists(String cardNumberPlain) {
-		String hash = cryptoService.sha256(cardNumberPlain);
-		log.info("Checking if card exists");
-        return repository.findByCardHashAndActiveTrue(hash);
-	}
 	
 	@Override
-	public CardResponse handleCardExistence(String cardNumber) {
-		return new CardResponse(checkCardExists(cardNumber).map(Card::getId)
-        		.orElseThrow(() -> new CardNotFoundException()));
-	}
-
-    
-    @Override
-    public BatchInsertResponse processFile(MultipartFile file) {
+    public BatchInsertResponse execute(MultipartFile file) {
     	log.info("Starting batch file processing");
 
         int processed = 0;
@@ -119,6 +66,7 @@ public class CardServiceImpl implements CardService {
             log.info("Expected records: {}", expectedRecords);
 
             String line;
+            String lineNum = "";
 
             while ((line = reader.readLine()) != null) {
 
@@ -134,6 +82,7 @@ public class CardServiceImpl implements CardService {
                             ? line + " ".repeat(26 - line.length())
                             : line;
 
+                    lineNum = line.substring(0,2);
                     Integer orderNumber =
                             Integer.parseInt(paddedLine.substring(1, 7).trim());
 
@@ -158,7 +107,7 @@ public class CardServiceImpl implements CardService {
                     }
 
                 } catch (Exception e) {
-                    log.error("line failed to be processed! reason: {}", e.getMessage());
+                    log.error("line {} failed to be processed! reason: {}", lineNum, e.getMessage());
                     failed++;
                 }
             }
@@ -204,5 +153,4 @@ public class CardServiceImpl implements CardService {
 
         return inserted;
     }
-
 }
