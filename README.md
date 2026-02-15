@@ -4,6 +4,23 @@
 
 <hr>
 
+<h3>Pontos Importantes!!!</h3>
+<ul>
+  <li>Os endpoints exigem Bearer Token para serem executados, podendo ser adquirido através desse endpoint: POST /auth/login</li>
+  <li>Para tornar o processo de autenticação um pouco mais real, uma das migrations cria uma tabela User e insere um registro nela que é usada para verificar se o usuário que está fazendo login realmente existe na base</li>
+  <li>O usuário criado é:
+  <br>
+    <b>
+    login: admin 
+    <br>
+    password: card$management</b>
+    <br>
+    Sendo este o único usuário que funciona para autenticação
+  </li>
+</ul>
+
+<hr>
+
 <h3>Tecnologias utilizadas</h3>
 <ul>
 <li>Java 17+</li>
@@ -18,8 +35,8 @@
 <hr>
 
 <h3>Arquitetura</h3>
-<span>O projeto segue uma arquitetura hexagonal</span>
-<span>Essa escolha foi feita para garantir:</span>
+<span>O projeto segue uma arquitetura hexagonal.</span>
+<span> Essa escolha foi feita para garantir:</span>
 <ul>
   <li>Separação clara de responsabilidades entre domínio, casos de uso, adaptadores de entrada (Controller) e adaptadores de saída (Adapters)</li>
   <li>Maior facilidade de manutenção, isolando regras de negócio e detalhes de infraestrutura</li>
@@ -72,7 +89,12 @@
 <br>
 <span>Os scripts ficam em: src/main/resources/db/migration</span>
 <br>
-<span>As migrations são executadas automaticamente ao subir a aplicação. Na migration V3__insert_user.sql um usuário padrão é criado login: admin - password: card$management </span>
+<span>As migrations são executadas automaticamente ao subir a aplicação. Na migration V3__insert_user.sql um usuário padrão é criado 
+<br>
+  <b>login: admin 
+  <br>
+  password: card$management</b>  
+</span>
 
 <hr>
 
