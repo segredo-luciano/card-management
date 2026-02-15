@@ -28,8 +28,14 @@ Em um cenário de produção, essas informações seriam fornecidas via variáve
 <ul>
   <li>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</li>  
   <li>2. Entrar na pasta do projeto e inicializar o container com o comando: <b>docker compose up -d</b></li>
-  <li>3. Rodar o comando mvnw clean package para limpar</li>
-  <li>4. É possível rodar a aplicação direto na IDE, por exemplo: Eclipse, InteliJ ou com o comando: <b>mvn spring-boot:run</b> caso o maven esteja instalado globalmente</li>
+  <li>3. Buildar o projeto:</li>
+
+    Mac / Linux:
+    <pre><code>./mvnw clean package</code></pre>
+    
+    Windows:
+    <pre><code>mvnw clean package</code></pre>
+  <li>4. É possível rodar a aplicação direto na IDE, por exemplo: Eclipse, IntelliJ ou com o comando: <b>mvn spring-boot:run</b> caso o maven esteja instalado globalmente</li>
 </ul>
 <span>
   <h5>Endpoints disponibilizados:</h5>
