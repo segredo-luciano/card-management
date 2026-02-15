@@ -30,9 +30,14 @@
 
 <h3>Segurança e criptografia</h3>
 <ul>
+  <li>Foi utilizado JWT por ser um mecanismo stateless, permitindo escalabilidade horizontal da aplicação sem necessidade de armazenamento de sessão</li>
   <li>Para obter o token JWT: POST /auth/login</li>
-  <li><b>Ao rodar o projeto Spring, é criado um login padrão a partir do Flyway: login: admin - password: card$management</b></li>
-  <li>As demais rotas exigem token para autenticação</li>  
+  <li><b>Ao rodar o projeto Spring, é criado um login padrão a partir do Flyway: 
+    <br>
+    login: admin 
+    <br>
+    password: card$management</b></li>
+  <li>As demais rotas exigem Bearer token para autenticação</li>  
   <li>Dados em repouso
     <ul>
       <li>Criptografia AES aplicada aos números de cartão antes de salvar no banco</li>
@@ -44,7 +49,7 @@
     <ul>
       <li><b>A parte de cliente não foi implementada, então a end-to-end não é completa. Para end-to-end real, seria necessário um mecanismo de troca de chaves ou uso de criptografia assimétrica, o que envolve o frontend ou outro serviço cliente</b>
       </li>
-      <li>Em ambiente produtivo isso pode ser feito por: Load Balancer / API Gateway ou Configuração SSL no próprio Spring Boot</li>
+      <li>Em ambiente produtivo isso pode ser feito por: Load Balancer ou Configuração SSL no próprio Spring Boot</li>
 </ul>
 
 <hr>
@@ -73,4 +78,16 @@
 <h3>Rodando a aplicação com Docker</h3>
 <h4>Para facilitar a execução da API e do banco de dados, utilizamos Docker Compose. Siga os passos abaixo</h4>
 <span>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</span>
+<span>2. Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente exclusivas para execução local via Docker Compose, sem qualquer valor sensível real.
+Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente ou secret manager</span>
+<span>3. Comando para inicializar o container: docker-compose up --build</span>
+<span>
+  <h5>Endpoints disponibilizados:</h5>
+  <ul>
+    <li>POST /auth/login</li>
+    <li>GET /cards?cardNumber=</li>
+    <li>POST /cards</li>
+    <li>POST /cards/batch</li>
+  </ul>
+</span>
 
