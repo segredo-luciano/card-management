@@ -66,4 +66,11 @@
 <br>
 <span>Os scripts ficam em: src/main/resources/db/migration</span>
 <br>
-<span>As migrations são executadas automaticamente ao subir a aplicação</span>
+<span>As migrations são executadas automaticamente ao subir a aplicação. Na migration V3__insert_user.sql um usuário padrão é criado login: admin - password: card$management </span>
+
+<hr>
+
+<h3>Rodando a aplicação com Docker</h3>
+<h4>Para facilitar a execução da API e do banco de dados, utilizamos Docker Compose. Siga os passos abaixo</h4>
+<span>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</span>
+
