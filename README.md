@@ -31,11 +31,13 @@ Em um cenário de produção, essas informações seriam fornecidas via variáve
   <li>3. Buildar o projeto:</li>
 
     Mac / Linux:
-    <pre><code>./mvnw clean package</code></pre>
+    ./mvnw clean package
     
     Windows:
-    <pre><code>mvnw clean package</code></pre>
-  <li>4. É possível rodar a aplicação direto na IDE, por exemplo: Eclipse, IntelliJ ou com o comando: <b>mvn spring-boot:run</b> caso o maven esteja instalado globalmente</li>
+    mvnw clean package
+  <li>4. É possível rodar a aplicação direto na IDE, por exemplo: Eclipse, IntelliJ ou com o comando: 
+    <pre><code>mvn spring-boot:run</code></pre>
+ caso o maven esteja instalado globalmente</li>
 </ul>
 <span>
   <h5>Endpoints disponibilizados:</h5>
