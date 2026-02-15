@@ -1,5 +1,154 @@
 <h1><b>Card Management API</b></h1>
 
+<p align="right">
+  <a href="#-english-version">🇺🇸 English</a> |
+  <a href="#-versão-em-português">🇧🇷 Português</a>
+</p>
+
+<hr>
+
+<h2 id="-english-version">🇺🇸 English Version</h2>
+
+<h3>API for secure storage and retrieval of full card numbers</h3>
+
+<hr>
+
+<h3>Important Notes!!!</h3>
+<ul>
+  <li>All endpoints require a Bearer Token. You can obtain it through: <b>POST /auth/login</b></li>
+  <li>To make the authentication flow more realistic, one of the migrations creates a <b>User</b> table and inserts a default record used to validate the login</li>
+  <li>Default user:
+    <br>
+    <b>
+    login: admin
+    <br>
+    password: card$management
+    </b>
+    <br>
+    This is the only valid user for authentication
+  </li>
+  <li>For technical evaluation purposes, the <b>application.properties</b> file was versioned with database credentials.
+  <br>
+  In a real production environment, these values should be provided through environment variables</li>
+</ul>
+
+<hr>
+
+<h3>Running the application with Docker</h3>
+<h4>To simplify the execution of the API and the database, Docker Compose was used. Follow the steps below:</h4>
+
+<ul>
+  <li>1. Docker Desktop must be running so the containers can start correctly</li>
+  <li>2. Go to the project root folder and start the container:
+    <pre><code>docker compose up -d</code></pre>
+  </li>
+  <li>3. Build the project:</li>
+</ul>
+
+Mac / Linux:
+<pre><code>./mvnw clean package</code></pre>
+
+Windows:
+<pre><code>mvnw clean package</code></pre>
+
+<ul>
+  <li>4. You can run the application directly from an IDE (Eclipse, IntelliJ) or using:
+    <pre><code>mvn spring-boot:run</code></pre>
+    if Maven is installed globally
+  </li>
+</ul>
+
+<h5>Available endpoints:</h5>
+<ul>
+  <li>POST /auth/login</li>
+  <li>GET /cards?cardNumber=</li>
+  <li>POST /cards</li>
+  <li>POST /cards/batch</li>
+</ul>
+
+<hr>
+
+<h3>Technologies</h3>
+<ul>
+<li>Java 17+</li>
+<li>Apache Maven 3.9.9</li>
+<li>Spring Boot</li>
+<li>Spring Security (JWT)</li>
+<li>Spring Data JPA</li>
+<li>MySQL</li>
+<li>Flyway</li>
+<li>Docker & Docker Compose</li>
+</ul>
+
+<hr>
+
+<h3>Architecture</h3>
+<span>The project follows a hexagonal architecture.</span>
+<span>This choice ensures:</span>
+<ul>
+  <li>Clear separation of responsibilities between domain, use cases, input adapters (Controllers) and output adapters</li>
+  <li>Better maintainability by isolating business rules from infrastructure details</li>
+  <li>Flexibility for future changes with minimal impact on the application</li>
+</ul>
+
+<hr>
+
+<h3>Security and Cryptography</h3>
+<ul>
+  <li>JWT was chosen because it is stateless, allowing horizontal scalability without session storage</li>
+  <li>To obtain the token: POST /auth/login</li>
+  <li><b>When the application starts, Flyway creates a default user:
+    <br>
+    login: admin
+    <br>
+    password: card$management</b></li>
+  <li>All other routes require a Bearer token</li>
+  <li>Data at rest:
+    <ul>
+      <li>AES encryption applied to card numbers before storing</li>
+      <li>SHA-256 hash for fast existence checks</li>
+      <li>The card number is never stored in plain text</li>
+    </ul>
+  </li>
+  <li>Data in transit:
+    <ul>
+      <li>The client side was not implemented, so end-to-end encryption is not complete.
+      A real scenario would require key exchange or asymmetric cryptography involving the frontend or another client service</li>
+      <li>In production this can be achieved using a Load Balancer or SSL configuration in Spring Boot</li>
+    </ul>
+  </li>
+</ul>
+
+<hr>
+
+<h3>Scalability</h3>
+<span>The application was designed to handle large data volumes:</span>
+<ul>
+  <li>Batch file processing with configurable chunk size</li>
+  <li>Buffered file reading</li>
+  <li>Indexed hash-based search</li>
+  <li>High-performance duplicate handling</li>
+  <li>Batch persistence</li>
+</ul>
+
+<hr>
+
+<h3>Flyway Migrations</h3>
+<span>Database versioning is managed with Flyway</span>
+<br>
+<span>Scripts location: src/main/resources/db/migration</span>
+<br>
+<span>Migrations run automatically when the application starts. In <b>V3__insert_user.sql</b> a default user is created:
+<br>
+<b>login: admin
+<br>
+password: card$management</b>
+</span>
+
+<hr>
+
+<h2 id="-versão-em-português">🇧🇷 Versão em Português</h2>
+
 <h3>API para armazenamento seguro e consulta de números completos de cartão</h3>
 
 <hr>
@@ -126,4 +275,5 @@ Em um cenário de produção, essas informações seriam fornecidas via variáve
   <br>
   password: card$management</b>  
 </span>
+
 
