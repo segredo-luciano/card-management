@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,12 @@ public class LoginService implements LoginUseCase {
         Optional<User> userOp = userRepository.searchByLogin(login);
         if(userOp.isEmpty())
         	log.error("Invalid credentials");
-        	userOp.orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        	userOp.orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
         User user = userOp.get();
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
         	log.error("Invalid credentials");
-            throw new RuntimeException("Invalid credentials");
+            throw new BadCredentialsException("Invalid credentials");
         }
 
         String token = jwtService.generateToken(user.getLogin(), user.getRole());
