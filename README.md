@@ -17,13 +17,36 @@
     <br>
     Sendo este o único usuário que funciona para autenticação
   </li>
+  <li>Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente e acessos do banco de dados.
+Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente</li>
 </ul>
+
+<hr>
+
+<h3>Rodando a aplicação com Docker</h3>
+<h4>Para facilitar a execução da API e do banco de dados, utilizamos Docker Compose. Siga os passos abaixo</h4>
+<ul>
+  <li>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</li>  
+  <li>2. Entrar na pasta do projeto e inicializar o container com o comando: <b>docker compose up -d</b></li>
+  <li>3. Rodar o comando mvnw clean package para limpar</li>
+  <li>4. É possível rodar a aplicação direto na IDE, por exemplo: Eclipse, InteliJ ou com o comando: <b>mvn spring-boot:run</b> caso o maven esteja instalado globalmente</li>
+</ul>
+<span>
+  <h5>Endpoints disponibilizados:</h5>
+  <ul>
+    <li>POST /auth/login</li>
+    <li>GET /cards?cardNumber=</li>
+    <li>POST /cards</li>
+    <li>POST /cards/batch</li>
+  </ul>
+</span>
 
 <hr>
 
 <h3>Tecnologias utilizadas</h3>
 <ul>
 <li>Java 17+</li>
+<li>Apache Maven 3.9.9</li>
 <li>Spring Boot</li>
 <li>Spring Security (JWT)</li>
 <li>Spring Data JPA</li>
@@ -94,25 +117,5 @@
   <b>login: admin 
   <br>
   password: card$management</b>  
-</span>
-
-<hr>
-
-<h3>Rodando a aplicação com Docker</h3>
-<h4>Para facilitar a execução da API e do banco de dados, utilizamos Docker Compose. Siga os passos abaixo</h4>
-<ul>
-  <li>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</li>
-  <li>2. Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente exclusivas para execução local via Docker Compose, sem qualquer valor sensível real.
-Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente</li>
-  <li>3. Entrar na pasta do projeto e inicializar o container com o comando: <b>docker compose up -d</b></li>
-</ul>
-<span>
-  <h5>Endpoints disponibilizados:</h5>
-  <ul>
-    <li>POST /auth/login</li>
-    <li>GET /cards?cardNumber=</li>
-    <li>POST /cards</li>
-    <li>POST /cards/batch</li>
-  </ul>
 </span>
 
