@@ -82,7 +82,7 @@
   <li>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</li>
   <li>2. Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente exclusivas para execução local via Docker Compose, sem qualquer valor sensível real.
 Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente</li>
-  <li>3. Comando para inicializar o container: <b>docker-compose up --build</b></li>
+  <li>3. Entrar na pasta do projeto e inicializar o container com o comando: <b>docker-compose up --build</b></li>
 </ul>
 <span>
   <h5>Endpoints disponibilizados:</h5>
