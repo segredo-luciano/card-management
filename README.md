@@ -50,6 +50,7 @@
       <li><b>A parte de cliente não foi implementada, então a end-to-end não é completa. Para end-to-end real, seria necessário um mecanismo de troca de chaves ou uso de criptografia assimétrica, o que envolve o frontend ou outro serviço cliente</b>
       </li>
       <li>Em ambiente produtivo isso pode ser feito por: Load Balancer ou Configuração SSL no próprio Spring Boot</li>
+    </ul>
 </ul>
 
 <hr>
@@ -77,10 +78,12 @@
 
 <h3>Rodando a aplicação com Docker</h3>
 <h4>Para facilitar a execução da API e do banco de dados, utilizamos Docker Compose. Siga os passos abaixo</h4>
-<span>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</span>
-<span>2. Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente exclusivas para execução local via Docker Compose, sem qualquer valor sensível real.
-Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente ou secret manager</span>
-<span>3. Comando para inicializar o container: docker-compose up --build</span>
+<ul>
+  <li>1. O Docker Desktop precisa estar rodando para que os containers sejam iniciados corretamente</li>
+  <li>2. Para facilitar a avaliação técnica, o arquivo application.properties foi versionado contendo credenciais de ambiente exclusivas para execução local via Docker Compose, sem qualquer valor sensível real.
+Em um cenário de produção, essas informações seriam fornecidas via variáveis de ambiente</li>
+  <li>3. Comando para inicializar o container: <b>docker-compose up --build</b></li>
+</ul>
 <span>
   <h5>Endpoints disponibilizados:</h5>
   <ul>
