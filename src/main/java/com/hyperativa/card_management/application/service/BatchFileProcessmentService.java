@@ -120,7 +120,11 @@ public class BatchFileProcessmentService implements BatchFileProcessmentUseCase 
                 log.error("Record count mismatch. Expected={}, Found={}",
                         expectedRecords, processed);
             }
+        } catch(StringIndexOutOfBoundsException sioobe) {
+        	log.error("Error processing batch file! reason: {}", sioobe.getMessage());
+        	throw new BatchProcessingException("Invalid file format for batch processment", sioobe);
         } catch (Exception e) {
+        	log.error("Error processing batch file! reason: {}", e.getMessage());
             throw new BatchProcessingException("Error processing batch file", e);
         }
 
