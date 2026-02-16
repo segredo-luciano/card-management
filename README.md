@@ -72,7 +72,7 @@ Windows:
 <ul>
 <li>Java 17+</li>
 <li>Apache Maven 3.9.9</li>
-<li>Spring Boot</li>
+<li>Spring Boot 3.3.5</li>
 <li>Spring Security (JWT)</li>
 <li>Spring Data JPA</li>
 <li>MySQL</li>
@@ -204,7 +204,7 @@ Em um cenário de produção, essas informações seriam fornecidas via variáve
 <ul>
 <li>Java 17+</li>
 <li>Apache Maven 3.9.9</li>
-<li>Spring Boot</li>
+<li>Spring Boot 3.3.5</li>
 <li>Spring Security (JWT)</li>
 <li>Spring Data JPA</li>
 <li>MySQL</li>
